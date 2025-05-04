@@ -1,0 +1,692 @@
+/* Global resets */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans",
+      "Helvetica Neue", sans-serif;
+    background-color: #fff;
+    color: #000;
+  }
+  
+  /* Container for the entire page */
+  .home-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    position: relative;
+    background-color: #fff;
+  }
+  
+  /* Navigation Header */
+  .nav-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 40px;
+    border-bottom: 1px solid #eee;
+  }
+  
+  .nav-left {
+    display: flex;
+    align-items: center;
+    gap: 40px;
+  }
+  
+  .logo {
+    font-size: 1.4rem;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    color: #105570; /* Updated to match logo color */
+  }
+  
+  .logo-img {
+    height: 40px;
+    width: auto;
+    margin-right: 10px;
+  }
+  
+  .nav-links {
+    list-style: none;
+    display: flex;
+    gap: 30px;
+  }
+  
+  .nav-links li a {
+    text-decoration: none;
+    color: #000;
+    font-weight: 500;
+    position: relative;
+    transition: color 0.5s ease;
+  }
+  
+  .nav-links li a::after {
+    content: "";
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: -4px;
+    left: 0;
+    background-color: #000;
+    transition: width 0.5s ease;
+  }
+  
+  .nav-links li a:hover::after {
+    width: 100%;
+  }
+  
+  .nav-links li a:hover {
+    color: #000;
+  }
+  
+  .nav-right {
+    display: flex;
+    gap: 10px;
+  }
+  
+  .sign-in-btn,
+  .demo-btn.header-demo-btn {
+    cursor: pointer;
+    padding: 12px 24px;
+    font-size: 1rem;
+    border-radius: 8px;
+    transition: background-color 0.5s;
+  }
+  
+  .sign-in-btn {
+    background: none;
+    border: none;
+    color: #000;
+  }
+  
+  .sign-in-btn:hover {
+    background-color: #f0f0f0;
+  }
+  
+  .demo-btn.header-demo-btn {
+    background-color: #105570; /* Updated to match logo color */
+    color: #fff;
+    border: none;
+    font-weight: 500;
+  }
+  
+  .demo-btn.header-demo-btn:hover {
+    background-color: #0a4255; /* Darker shade for hover */
+  }
+  
+  /* Hero Section */
+  .hero-section {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    padding: 60px 40px;
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+  
+  .hero-text {
+    max-width: 600px;
+    width: 100%; /* Ensure full width */
+  }
+  
+  .hero-title {
+    font-size: 5rem;
+    margin-bottom: 1rem;
+    font-weight: 600;
+    line-height: 1.2;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeInUp 1s ease forwards;
+  }
+  
+  .hero-subtitle {
+    font-size: 1.15rem;
+    color: #555;
+    margin-bottom: 2rem;
+    line-height: 1.6;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeInUp 1s ease forwards 0.3s;
+  }
+  
+  .hero-cta {
+    display: flex;
+    justify-content: center;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeInUp 1s ease forwards 0.6s;
+    width: 100%; /* Ensure full width */
+  }
+  
+  /* "Try now": Black background, white text */
+  .try-btn {
+    background-color: #105570; /* Updated to match logo color */
+    color: #fff;
+    border: 1px solid #105570; /* Updated to match logo color */
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 16px 24px;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    font-weight: 500;
+  }
+  
+  .try-btn:hover {
+    background-color: #0a4255; /* Darker shade for hover */
+  }
+  
+  .try-btn .arrow {
+    font-size: 1.4rem;
+    line-height: 1;
+  }
+  
+  /* Boost Section */
+  .boost-section {
+    text-align: center;
+    padding: 40px 20px;
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+  
+  .boost-title {
+    font-size: 2.5rem;
+    font-weight: 600;
+    line-height: 1.2;
+    margin-bottom: 1rem;
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  
+  .boost-subtitle {
+    font-size: 1.5rem;
+    color: #555;
+    margin-bottom: 2rem;
+    font-weight: 800;
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  
+  /* Scroll indicator */
+  .scroll-indicator {
+    text-align: center;
+    position: relative;
+    height: 50px;
+    margin: 20px auto 40px;
+  }
+  
+  .scroll-arrow {
+    width: 36px;
+    height: 36px;
+    animation: bounce 2s infinite, fade-on-scroll 1s forwards;
+    opacity: 0.9;
+    stroke: #105570; /* Updated to match logo color */
+  }
+  
+  @keyframes bounce {
+    0%,
+    20%,
+    50%,
+    80%,
+    100% {
+      transform: translateY(0);
+    }
+    40% {
+      transform: translateY(-10px);
+    }
+    60% {
+      transform: translateY(-5px);
+    }
+  }
+  
+  /* Features Section */
+  .features-section {
+    padding: 80px 40px;
+    max-width: 1200px;
+    margin: 0 auto;
+    text-align: center;
+  }
+  
+  .features-title {
+    font-size: 3rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    line-height: 1.2;
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  
+  .features-subtitle {
+    font-size: 1.25rem;
+    color: #555;
+    margin-bottom: 4rem;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 40px;
+    text-align: left;
+  }
+  
+  .feature-card {
+    padding: 32px;
+    border-radius: 12px;
+    background-color: #f8f8f8;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    min-height: 250px;
+  }
+  
+  .feature-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    outline: 1px solid rgba(0, 0, 0, 0.1);
+  }
+  
+  .feature-card:hover h3 {
+    color: #105570; /* Updated to match logo color */
+  }
+  
+  .feature-card:hover .feature-icon {
+    transform: scale(1.05);
+  }
+  
+  .feature-card:hover .feature-icon svg {
+    transform: scale(1.05);
+  }
+  
+  /* Update the highlight color from orange to blue */
+  .highlight {
+    color: #105570; /* Updated to match logo color */
+  }
+  
+  /* Update other orange elements to blue */
+  .feature-icon {
+    width: 60px;
+    height: 60px;
+    background-color: #e6f7ff; /* Light blue background */
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 24px;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  .feature-icon svg {
+    width: 30px;
+    height: 30px;
+    color: #105570; /* Updated to match logo color */
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  .feature-card h3 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 12px;
+    color: #000;
+  }
+  
+  .feature-card p {
+    font-size: 1rem;
+    color: #555;
+    line-height: 1.5;
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 1024px) {
+    .features-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  
+  @media (max-width: 640px) {
+    .features-grid {
+      grid-template-columns: 1fr;
+    }
+  
+    .features-title {
+      font-size: 2.5rem;
+    }
+  }
+  
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  /* Add Intersection Observer classes */
+  .scroll-trigger {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  
+  .scroll-trigger.animate {
+    animation: fadeInUp 0.5s cubic-bezier(0.19, 1, 0.22, 1) forwards;
+  }
+  
+  /* Animation delays for each element type */
+  .boost-title.scroll-trigger.animate {
+    animation-delay: 0.1s;
+    animation-duration: 0.5s;
+  }
+  .boost-subtitle.scroll-trigger.animate {
+    animation-delay: 0.2s;
+    animation-duration: 0.5s;
+  }
+  .features-title.scroll-trigger.animate {
+    animation-delay: 0.1s;
+    animation-duration: 0.5s;
+  }
+  .features-subtitle.scroll-trigger.animate {
+    animation-delay: 0.2s;
+    animation-duration: 0.5s;
+  }
+  .feature-card.scroll-trigger.animate {
+    animation-delay: 0.3s;
+    animation-duration: 0.5s;
+  }
+  .process-step.scroll-trigger.animate {
+    animation-delay: 0.3s;
+    animation-duration: 0.5s;
+  }
+  
+  /* Process Section */
+  .process-section {
+    padding: 100px 40px;
+    max-width: 1200px;
+    margin: 0 auto;
+    text-align: center;
+  }
+  
+  .process-title {
+    font-size: 3rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    line-height: 1.2;
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  
+  .process-subtitle {
+    font-size: 1.25rem;
+    color: #555;
+    margin-bottom: 4rem;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  
+  .process-steps {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 100px;
+    position: relative;
+    padding: 0;
+    max-width: 2000px;
+    margin: 0 auto;
+    width: 100%;
+  }
+  
+  /* Push first and last icons much further outward */
+  .process-step:first-child {
+    margin-right: auto;
+    margin-left: -80px;
+  }
+  
+  .process-step:last-child {
+    margin-left: auto;
+    margin-right: -80px;
+  }
+  
+  /* Keep the middle step centered */
+  .process-step:nth-child(2) {
+    margin: 0 auto;
+  }
+  
+  /* Remove the line by hiding the pseudo-element */
+  .process-steps::before {
+    display: none; /* This hides the line completely */
+  }
+  
+  /* Keep the arrows but ensure they're properly visible without the line animation dependency */
+  .process-step:nth-child(1)::after,
+  .process-step:nth-child(2)::after {
+    content: "";
+    position: absolute;
+    top: 135px;
+    right: -330px;
+    width: 14px;
+    height: 14px;
+    border-top: 2px solid rgba(16, 85, 112, 0.8); /* Updated to match logo color */
+    border-right: 2px solid rgba(16, 85, 112, 0.8); /* Updated to match logo color */
+    transform: translateY(-50%) rotate(45deg);
+    z-index: 1;
+    /* No opacity:0 - make arrows visible by default */
+  }
+  
+  /* Remove animation references for the line */
+  .process-steps.scroll-trigger.animate::before {
+    animation: none;
+  }
+  
+  /* Apply the same animation when parent gets the animate class */
+  .process-steps.scroll-trigger.animate::before {
+    animation: none;
+  }
+  
+  /* Apply the same for arrows */
+  .process-step:nth-child(1)::after,
+  .process-step:nth-child(2)::after {
+    content: "";
+    position: absolute;
+    top: 135px;
+    right: -330px;
+    width: 14px;
+    height: 14px;
+    border-top: 2px solid rgba(16, 85, 112, 0.8); /* Updated to match logo color */
+    border-right: 2px solid rgba(16, 85, 112, 0.8); /* Updated to match logo color */
+    transform: translateY(-50%) rotate(45deg);
+    z-index: 1;
+    /* No opacity:0 - make arrows visible by default */
+  }
+  
+  /* Apply animations to arrows when container is animated */
+  .process-steps.scroll-trigger.animate .process-step:nth-child(1)::after {
+    animation: none;
+  }
+  
+  .process-steps.scroll-trigger.animate .process-step:nth-child(2)::after {
+    animation: none;
+  }
+  
+  /* Remove any unused styles */
+  .process-line,
+  .process-arrow-1,
+  .process-arrow-2 {
+    display: none;
+  }
+  
+  .process-step {
+    flex: 1;
+    position: relative;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .step-number {
+    display: none;
+    font-size: 5rem;
+    font-weight: 200;
+    color: #e0efe4;
+    margin-bottom: -35px;
+    position: relative;
+    z-index: 1;
+  }
+  
+  .step-icon {
+    width: 140px;
+    height: 140px;
+    background-color: #e6f7ff; /* Light blue background */
+    border-radius: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 40px;
+    position: relative;
+    z-index: 2;
+    border: 1px solid rgba(16, 85, 112, 0.2); /* Updated to match logo color */
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.04);
+  }
+  
+  .step-icon svg {
+    width: 50px;
+    height: 50px;
+    stroke: #105570; /* Updated to match logo color */
+    stroke-width: 2;
+  }
+  
+  .process-step h3 {
+    font-size: 1.8rem;
+    font-weight: 600;
+    margin-bottom: 16px;
+    color: #000;
+    width: 100%;
+    text-align: center;
+  }
+  
+  .process-step p {
+    font-size: 1.1rem;
+    color: #555;
+    line-height: 1.5;
+    max-width: 600px;
+    margin: 0 auto;
+    text-align: center;
+  }
+  
+  .process-step h3 .linebreak {
+    display: block;
+    line-height: 1.1;
+  }
+  
+  .process-step.ai-autofill h3 {
+    line-height: 1.1;
+  }
+  
+  .process-step.ai-autofill h3 .ai {
+    display: block;
+  }
+  
+  /* Special styling for AI Autofill heading */
+  .process-step h3[data-title="AI Autofill"] {
+    position: relative;
+    height: 3.5em;  /* Create space for two lines */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    line-height: 1.2;
+  }
+  
+  /* Force a line break by hiding the space between AI and Autofill */
+  .process-step h3[data-title="AI Autofill"]::before {
+    content: "AI";
+    display: block;
+  }
+  
+  .process-step h3[data-title="AI Autofill"]::after {
+    content: "Autofill";
+    display: block;
+  }
+  
+  .process-step h3[data-title="AI Autofill"] span {
+    display: none;  /* Hide the original text */
+  }
+  
+  @media (max-width: 1024px) {
+    .process-steps {
+      flex-direction: column;
+      align-items: center;
+    }
+  
+    /* Hide lines and arrows in mobile view */
+    .process-line,
+    .process-arrow-1,
+    .process-arrow-2 {
+      display: none;
+    }
+  
+    .process-step {
+      max-width: 500px;
+      width: 100%;
+    }
+  }
+  
+  .ai-break {
+    display: inline-block;
+    line-height: 1.2;
+  }
+  
+  /* Style the line */
+  .process-line {
+    position: absolute;
+    top: 135px;
+    left: 70px;
+    right: 70px;
+    height: 1px;
+    background-color: rgba(16, 85, 112, 0.4); /* Updated to match logo color */
+    z-index: 0;
+  }
+  
+  /* Style the arrows */
+  .arrow-1,
+  .arrow-2 {
+    position: absolute;
+    top: 135px;
+    width: 14px;
+    height: 14px;
+    border-top: 2px solid rgba(16, 85, 112, 0.8); /* Updated to match logo color */
+    border-right: 2px solid rgba(16, 85, 112, 0.8); /* Updated to match logo color */
+    transform: translateY(-50%) rotate(45deg);
+    z-index: 1;
+  }
+  
+  .arrow-1 {
+    left: calc(33% - 7px);
+  }
+  
+  .arrow-2 {
+    left: calc(66% - 7px);
+  }
+  
+  /* Add specific animation timing */
+  .process-line.scroll-trigger.animate {
+    animation-delay: 0.5s;
+  }
+  .arrow-1.scroll-trigger.animate {
+    animation-delay: 0.7s;
+  }
+  .arrow-2.scroll-trigger.animate {
+    animation-delay: 0.9s;
+  }
+  
