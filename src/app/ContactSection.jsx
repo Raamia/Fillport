@@ -30,7 +30,6 @@ const ContactSection = () => {
               </div>
             </div>
   
-            
           </div>
   
           <form className="contact-form scroll-trigger">

@@ -1,0 +1,243 @@
+.auth-page {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f8f9fa;
+    padding: 40px 20px;
+  }
+  
+  .auth-container {
+    background-color: white;
+    border-radius: 12px;
+    width: 100%;
+    max-width: 480px;
+    padding: 40px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  }
+  
+  .auth-header {
+    text-align: center;
+    margin-bottom: 30px;
+  }
+  
+  .auth-logo-link {
+    text-decoration: none;
+    color: inherit;
+  }
+  
+  .auth-logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+    font-size: 1.4rem;
+    font-weight: bold;
+    color: #105570;
+  }
+  
+  .auth-logo-img {
+    height: 30px;
+    width: auto;
+    margin-right: 8px;
+    border-radius: 6px;
+  }
+  
+  .auth-header h1 {
+    font-size: 1.8rem;
+    font-weight: 600;
+    margin-bottom: 10px;
+  }
+  
+  .auth-header p {
+    color: #666;
+    font-size: 1rem;
+  }
+  
+  /* Styles for feedback messages */
+  .auth-message {
+    padding: 12px 15px;
+    margin-bottom: 20px; /* Add space before the form */
+    border-radius: 8px;
+    font-size: 0.9rem;
+    text-align: center;
+  }
+
+  .auth-message.success {
+    background-color: #e6f9f0; /* Light green background */
+    color: #10703d; /* Darker green text */
+    border: 1px solid #a6eecb;
+  }
+
+  .auth-message.error {
+    background-color: #fdecea; /* Light red/pink background */
+    color: #c0341d; /* Darker red text */
+    border: 1px solid #f8c4bc;
+  }
+  
+  .auth-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  .auth-form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  .auth-form-group label {
+    font-size: 0.9rem;
+    font-weight: 500;
+  }
+  
+  .auth-form-group input {
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: border-color 0.3s;
+  }
+  
+  .auth-form-group input:focus {
+    outline: none;
+    border-color: #105570;
+  }
+  
+  .auth-forgot {
+    text-align: right;
+    margin-top: 4px;
+  }
+  
+  .auth-forgot a {
+    color: #105570;
+    font-size: 0.85rem;
+    text-decoration: none;
+  }
+  
+  .auth-forgot a:hover {
+    text-decoration: underline;
+  }
+  
+  .auth-submit {
+    background-color: #105570;
+    color: white;
+    border: none;
+    padding: 14px;
+    border-radius: 8px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-top: 10px;
+  }
+  
+  .auth-submit:hover:not(:disabled) {
+    background-color: #0a4255;
+  }
+  
+  .auth-submit:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+  }
+  
+  .auth-divider {
+    position: relative;
+    text-align: center;
+    margin: 20px 0;
+  }
+  
+  .auth-divider::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background-color: #eee;
+  }
+  
+  .auth-divider span {
+    position: relative;
+    background-color: white;
+    padding: 0 10px;
+    color: #666;
+    font-size: 0.9rem;
+  }
+  
+  .auth-social {
+    display: flex;
+    justify-content: center;
+  }
+  
+  .auth-social-btn {
+    flex: 1;
+    max-width: 240px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: white;
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .auth-social-btn:hover {
+    background-color: #f8f8f8;
+  }
+  
+  .auth-terms {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    font-size: 0.85rem;
+    color: #666;
+  }
+  
+  .auth-terms input {
+    margin-top: 3px;
+  }
+  
+  .auth-terms a {
+    color: #105570;
+    text-decoration: none;
+  }
+  
+  .auth-terms a:hover {
+    text-decoration: underline;
+  }
+  
+  .auth-password-requirements {
+    font-size: 0.8rem;
+    color: #666;
+    margin-top: 4px;
+  }
+  
+  .auth-switch {
+    text-align: center;
+    font-size: 0.9rem;
+    color: #666;
+  }
+  
+  .auth-switch a {
+    color: #105570;
+    font-weight: 500;
+    text-decoration: none;
+    margin-left: 4px;
+  }
+  
+  .auth-switch a:hover {
+    text-decoration: underline;
+  }
+  
+  @media (max-width: 480px) {
+    .auth-container {
+      padding: 30px 20px;
+    }
+  }
+  

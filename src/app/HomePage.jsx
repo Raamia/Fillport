@@ -1,6 +1,7 @@
 "use client"
 
 import { useEffect } from "react"
+import { useRouter } from "next/navigation"
 // Import the CSS files directly from the project
 import "./HomePage.css"
 import "./AdditionalStyles.css"
@@ -8,6 +9,16 @@ import PricingSection from "./PricingSection"
 import ContactSection from "./ContactSection"
 
 const HomePage = () => {
+  const router = useRouter()
+
+  const navigateToLogin = () => {
+    router.push("/login")
+  }
+
+  const navigateToSignup = () => {
+    router.push("/signup")
+  }
+
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
@@ -93,8 +104,12 @@ const HomePage = () => {
           </nav>
         </div>
         <div className="nav-right">
-          <button className="sign-in-btn">Log in</button>
-          <button className="demo-btn header-demo-btn">Try It Now</button>
+          <button className="sign-in-btn" onClick={navigateToLogin}>
+            Log in
+          </button>
+          <button className="demo-btn header-demo-btn" onClick={navigateToSignup}>
+            Try It Now
+          </button>
         </div>
       </header>
 
@@ -110,7 +125,7 @@ const HomePage = () => {
             with zero hassle.
           </p>
           <div className="hero-cta">
-            <button className="try-btn">
+            <button className="try-btn" onClick={navigateToSignup}>
               Try it Now <span className="arrow">→</span>
             </button>
           </div>
@@ -218,7 +233,7 @@ const HomePage = () => {
             <div className="step-number">01</div>
             <div className="step-icon">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                <path d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
               </svg>
             </div>
             <h3>Account Setup</h3>
