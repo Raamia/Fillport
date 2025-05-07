@@ -1,0 +1,22 @@
+/* Reuse some styles from auth-pages.css by importing it in the component */
+
+/* Add specific overrides or new styles for onboarding */
+.onboarding-page {
+    /* You could change the background slightly if desired */
+    /* background-color: #f0f2f5; */
+  }
+  
+.onboarding-container {
+    max-width: 520px; /* Slightly wider maybe */
+}
+
+/* Add specific styles for onboarding form elements if needed */
+
+.loading-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    font-size: 1.2rem;
+    color: #555;
+} 

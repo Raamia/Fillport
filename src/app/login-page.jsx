@@ -4,6 +4,7 @@ import { useState } from "react"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
 import { supabase } from "../lib/supabaseClient"
+import toast from 'react-hot-toast'
 import "./auth-pages.css"
 
 const LoginPage = () => {
@@ -11,12 +12,10 @@ const LoginPage = () => {
   const [isLoading, setIsLoading] = useState(false)
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
-  const [error, setError] = useState(null)
 
   const handleSubmit = async (e) => {
     e.preventDefault()
     setIsLoading(true)
-    setError(null)
 
     try {
       const { error: signInError } = await supabase.auth.signInWithPassword({
@@ -26,20 +25,36 @@ const LoginPage = () => {
 
       if (signInError) {
         if (signInError.message.includes("Invalid login credentials")) {
-          setError("Invalid email or password.")
+          toast.error("Invalid email or password.")
         } else {
           throw signInError
         }
       } else {
-        router.push("/dashboard")
+         toast.success('Successfully logged in!')
+         router.push("/dashboard") 
       }
 
     } catch (error) {
       console.error("Error signing in:", error)
-      if (!error.message.includes("Invalid login credentials")) {
-        setError(error.message || "An unexpected error occurred.")
-      }
+      toast.error(error.message || "An unexpected error occurred during login.")
     } finally {
+      setIsLoading(false)
+    }
+  }
+
+  const handleGoogleLogin = async () => {
+    setIsLoading(true)
+    try {
+      const { error: oauthError } = await supabase.auth.signInWithOAuth({
+        provider: 'google',
+      })
+
+      if (oauthError) {
+        throw oauthError
+      }
+    } catch (error) {
+      console.error("Error logging in with Google:", error)
+      toast.error(error.message || "Failed to initiate Google login.")
       setIsLoading(false)
     }
   }
@@ -57,8 +72,6 @@ const LoginPage = () => {
           <h1>Welcome back</h1>
           <p>Sign in to access your forms and documents</p>
         </div>
-
-        {error && <p className="auth-message error">Error: {error}</p>}
 
         <form className="auth-form" onSubmit={handleSubmit}>
           <div className="auth-form-group">
@@ -99,7 +112,12 @@ const LoginPage = () => {
           </div>
 
           <div className="auth-social">
-            <button type="button" className="auth-social-btn">
+            <button 
+              type="button" 
+              className="auth-social-btn" 
+              onClick={handleGoogleLogin}
+              disabled={isLoading}
+            >
               <svg viewBox="0 0 24 24" width="24" height="24">
                 <path
                   fill="currentColor"
@@ -119,7 +137,7 @@ const LoginPage = () => {
                 />
                 <path fill="none" d="M1 1h22v22H1z" />
               </svg>
-              Google
+              {isLoading ? 'Redirecting...' : 'Google'}
             </button>
           </div>
 

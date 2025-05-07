@@ -45,6 +45,25 @@ const SignupPage = () => {
     }
   }
 
+  const handleGoogleLogin = async () => {
+    setError(null)
+    setMessage("")
+    setIsLoading(true)
+    try {
+      const { error: oauthError } = await supabase.auth.signInWithOAuth({
+        provider: 'google',
+      })
+
+      if (oauthError) {
+        throw oauthError
+      }
+    } catch (error) {
+      console.error("Error signing up/in with Google:", error)
+      setError(error.message || "Failed to initiate Google login.")
+      setIsLoading(false)
+    }
+  }
+
   return (
     <div className="auth-page">
       <div className="auth-container">
@@ -112,7 +131,12 @@ const SignupPage = () => {
           </div>
 
           <div className="auth-social">
-            <button type="button" className="auth-social-btn">
+            <button 
+              type="button" 
+              className="auth-social-btn" 
+              onClick={handleGoogleLogin}
+              disabled={isLoading}
+            >
               <svg viewBox="0 0 24 24" width="24" height="24">
                 <path
                   fill="currentColor"
@@ -132,7 +156,7 @@ const SignupPage = () => {
                 />
                 <path fill="none" d="M1 1h22v22H1z" />
               </svg>
-              Google
+              {isLoading ? 'Redirecting...' : 'Google'}
             </button>
           </div>
 
