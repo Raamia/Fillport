@@ -34,7 +34,8 @@ const Page = () => {
 
   // Optional: Listen for auth state changes to handle login/logout while on page
   useEffect(() => {
-    const { data: authListener } = supabase.auth.onAuthStateChange((event, session) => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { data: authListener } = supabase.auth.onAuthStateChange((event, _session) => {
       if (event === 'SIGNED_IN') {
         setIsAuthenticated(true)
         router.replace('/dashboard');

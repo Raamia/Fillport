@@ -69,7 +69,7 @@ const OnboardingPage = () => {
     checkSessionAndProfile()
 
     // Listen for logout
-    const { data: authListener } = supabase.auth.onAuthStateChange((event, session) => {
+    const { data: authListener } = supabase.auth.onAuthStateChange((event, _session) => {
       if (event === 'SIGNED_OUT') {
         router.push('/login')
       }

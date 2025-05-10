@@ -10,6 +10,7 @@ import {
   LayoutGrid, FileText, Layers, Settings, LogOut, Bell, Eye,
   CheckSquare, Loader2, Clock3, CalendarDays, Pencil
 } from 'lucide-react';
+import SettingsContent from './components/SettingsContent'; // Import the new component
 
 // Sample data for recent forms (replace with actual data fetching)
 const sampleRecentForms = [
@@ -91,7 +92,7 @@ const DashboardPage = () => {
     }
     checkUserAndProfile()
 
-    const { data: authListener } = supabase.auth.onAuthStateChange((_event, session) => {
+    const { data: authListener } = supabase.auth.onAuthStateChange((_event, _session) => {
         if (!isMounted) return;
         if (_event === 'SIGNED_OUT') {
            setLoading(true); // Set loading to true before redirect to hide content
@@ -171,9 +172,9 @@ const DashboardPage = () => {
           <nav className="sidebar-nav">
             <ul>
               <li><Link href="/dashboard" className={activePage === 'Dashboard' ? 'active' : ''} onClick={() => setActivePage('Dashboard')}><LayoutGrid className="sidebar-icon" /> Dashboard</Link></li>
-              <li><Link href="#" className={activePage === 'My Forms' ? 'active' : ''} onClick={() => setActivePage('My Forms')}><FileText className="sidebar-icon" /> My Forms</Link></li>
-              <li><Link href="#" className={activePage === 'Templates' ? 'active' : ''} onClick={() => setActivePage('Templates')}><Layers className="sidebar-icon" /> Templates</Link></li>
-              <li><Link href="#" className={activePage === 'Settings' ? 'active' : ''} onClick={() => setActivePage('Settings')}><Settings className="sidebar-icon" /> Settings</Link></li>
+              <li><Link href="/dashboard/my-forms" className={activePage === 'My Forms' ? 'active' : ''} onClick={(e) => { e.preventDefault(); setActivePage('My Forms'); }}><FileText className="sidebar-icon" /> My Forms</Link></li>
+              <li><Link href="/dashboard/templates" className={activePage === 'Templates' ? 'active' : ''} onClick={(e) => { e.preventDefault(); setActivePage('Templates'); }}><Layers className="sidebar-icon" /> Templates</Link></li>
+              <li><Link href="/dashboard/settings" className={activePage === 'Settings' ? 'active' : ''} onClick={(e) => { e.preventDefault(); setActivePage('Settings'); }}><Settings className="sidebar-icon" /> Settings</Link></li>
             </ul>
           </nav>
           <div className="sidebar-logout">
@@ -209,56 +210,77 @@ const DashboardPage = () => {
             </div>
           </header>
 
-          {/* Welcome Section */}
-          <section className="welcome-section">
-            <h1>Welcome to your dashboard</h1>
-            <p>Track, manage, and complete your forms all in one place</p>
-          </section>
-
-          {/* Summary Cards */}
-          <section className="summary-cards">
-            {summaryData.map(card => (
-              <div key={card.id} className={`summary-card ${card.type}`}>
-                <div className="icon-container">
-                  {renderSummaryIcon(card.iconName)}
+          {/* Conditional Rendering based on activePage */}
+          {activePage === 'Dashboard' && (
+            <>
+              <section className="welcome-section">
+                <h1>Welcome to your dashboard</h1>
+                <p>Track, manage, and complete your forms all in one place</p>
+              </section>
+              <section className="summary-cards">
+                {summaryData.map(card => (
+                  <div key={card.id} className={`summary-card ${card.type}`}>
+                    <div className="icon-container">
+                      {renderSummaryIcon(card.iconName)}
+                    </div>
+                    <div className="info">
+                      <h3>{card.value}</h3>
+                      <p>{card.title}</p>
+                    </div>
+                  </div>
+                ))}
+              </section>
+              <section className="recent-forms">
+                <div className="recent-forms-header">
+                  <h2>Recent Forms</h2>
+                  <Link href="#" className="view-all-link">View All</Link>
                 </div>
-                <div className="info">
-                  <h3>{card.value}</h3>
-                  <p>{card.title}</p>
+                <div className="recent-forms-table">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Form Name</th>
+                        <th>Status</th>
+                        <th>Last Updated</th>
+                        <th>Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {sampleRecentForms.map(form => (
+                        <tr key={form.id}>
+                          <td>{form.name}</td>
+                          <td><span className={`status-badge ${form.status.toLowerCase().replace(' ', '-')}`}>{form.status}</span></td>
+                          <td>{form.lastUpdated}</td>
+                          <td><Link href="#" className="action-view"><Eye className="sidebar-icon" /> View</Link></td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
                 </div>
-              </div>
-            ))}
-          </section>
+              </section>
+            </>
+          )}
 
-          {/* Recent Forms Table */}
-          <section className="recent-forms">
-            <div className="recent-forms-header">
-              <h2>Recent Forms</h2>
-              <Link href="#" className="view-all-link">View All</Link>
-            </div>
-            <div className="recent-forms-table">
-              <table>
-                <thead>
-                  <tr>
-                    <th>Form Name</th>
-                    <th>Status</th>
-                    <th>Last Updated</th>
-                    <th>Actions</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {sampleRecentForms.map(form => (
-                    <tr key={form.id}>
-                      <td>{form.name}</td>
-                      <td><span className={`status-badge ${form.status.toLowerCase().replace(' ', '-')}`}>{form.status}</span></td>
-                      <td>{form.lastUpdated}</td>
-                      <td><Link href="#" className="action-view"><Eye className="sidebar-icon" /> View</Link></td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </section>
+          {activePage === 'Settings' && (
+            <SettingsContent user={user} profile={profile} />
+          )}
+
+          {/* Placeholder for My Forms content */}
+          {activePage === 'My Forms' && (
+            <section>
+              <h1>My Forms</h1>
+              <p>This is where your forms will be listed. (Coming soon)</p>
+            </section>
+          )}
+
+          {/* Placeholder for Templates content */}
+          {activePage === 'Templates' && (
+            <section>
+              <h1>Templates</h1>
+              <p>Browse and manage form templates here. (Coming soon)</p>
+            </section>
+          )}
+
         </main>
       </div>
     )

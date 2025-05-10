@@ -1,0 +1,657 @@
+/* SettingsContent.css */
+
+.settings-page-content.styled-settings {
+  padding: 0; /* Remove padding if card has its own internal padding */
+  background-color: #f8f9fa; /* Match page background or keep white if preferred */
+  border-radius: 8px;
+  /* box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05); /* Optional: remove if page bg matches */
+}
+
+.settings-header {
+  padding: 24px 30px; /* Standard padding */
+  border-bottom: 1px solid #dee2e6;
+}
+
+.settings-header h1 {
+  font-size: 1.75rem; /* Slightly smaller than original if needed */
+  font-weight: 600;
+  color: #212529;
+  margin: 0 0 4px 0;
+}
+
+.settings-header p {
+  font-size: 0.95rem;
+  color: #6c757d;
+  margin: 0;
+}
+
+/* Tab Navigation */
+.settings-tabs {
+  display: flex;
+  padding: 0 30px; /* Align with header padding */
+  border-bottom: 1px solid #dee2e6;
+  margin-bottom: 0; /* Remove default margin if content has padding */
+}
+
+.settings-tabs .tab-item {
+  padding: 14px 18px;
+  margin-bottom: -1px; /* Pulls border up to overlap */
+  border: none;
+  border-bottom: 2px solid transparent;
+  background-color: transparent;
+  color: #495057;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: color 0.2s ease, border-color 0.2s ease;
+}
+
+.settings-tabs .tab-item:hover {
+  color: #007bff;
+}
+
+.settings-tabs .tab-item.active {
+  color: #007bff;
+  border-bottom-color: #007bff;
+  font-weight: 600;
+}
+
+/* Tab Content Area */
+.settings-tab-content {
+  padding: 24px 30px; /* Standard padding for content area */
+  background-color: #ffffff; /* White background for the content itself */
+  border-radius: 0 0 8px 8px; /* Round bottom corners if header/tabs are part of a card */
+}
+
+/* General Form Styling (replaces some .settings-subsection styles if not used) */
+.settings-form .form-group {
+  margin-bottom: 20px;
+}
+
+.settings-form label {
+  display: block;
+  font-weight: 500;
+  color: #343a40;
+  margin-bottom: 6px;
+  font-size: 0.9rem;
+}
+
+.settings-form input[type="text"],
+.settings-form input[type="password"],
+.settings-form input[type="email"],
+.settings-form select {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #ced4da;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  box-sizing: border-box; /* Important for width 100% */
+}
+
+.settings-form input[type="text"]:focus,
+.settings-form input[type="password"]:focus,
+.settings-form input[type="email"]:focus,
+.settings-form select:focus {
+  border-color: #80bdff;
+  outline: 0;
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+.settings-form .form-row {
+  display: flex;
+  gap: 20px;
+}
+
+.settings-form .form-group.half-width {
+  flex: 1;
+  min-width: 0; /* Allows flex items to shrink properly */
+}
+
+.settings-form .form-text {
+  display: block;
+  margin-top: 5px;
+  font-size: 0.8rem;
+  color: #6c757d;
+}
+
+.settings-form .form-actions {
+  margin-top: 24px;
+  text-align: right;
+}
+
+.settings-form .btn {
+  padding: 10px 20px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+  border: 1px solid transparent;
+}
+
+.settings-form .btn-primary {
+  background-color: #007bff; /* Changed to match active toggle switch blue */
+  color: white;
+  border-color: #007bff; /* Match background color */
+}
+
+.settings-form .btn-primary:hover:not(:disabled) {
+  background-color: #0056b3; /* Darken on hover */
+  border-color: #0056b3; /* Darken on hover */
+}
+
+.settings-form .btn:disabled {
+  background-color: #cccccc;
+  border-color: #cccccc;
+  color: #666666;
+  cursor: not-allowed;
+}
+
+/* Styles for clickable text, not necessarily tied to .settings-form if used elsewhere */
+.btn-text {
+  background-color: transparent;
+  border: none;
+  color: #007bff; /* Standard link blue */
+  padding: 2px 0; /* Minimal vertical padding, no horizontal padding */
+  font-weight: normal; /* Normal text weight */
+  text-align: left;
+  display: inline;
+  cursor: pointer;
+  text-decoration: none; /* No underline by default */
+}
+
+.btn-text:hover:not(:disabled) {
+  background-color: transparent;
+  color: #0056b3; /* Darken link blue on hover */
+  text-decoration: underline; /* Underline on hover for link affordance */
+}
+
+.btn-text:disabled {
+  background-color: transparent;
+  color: #6c757d; /* Muted text color when disabled */
+  cursor: not-allowed;
+  text-decoration: none;
+}
+
+/* If .btn-text is inside .settings-form .form-actions, it will inherit text-align from it */
+/* .notification-settings .form-actions might still control its alignment (left/right) */
+
+/* Messages */
+.form-message {
+  padding: 10px 15px;
+  margin-top: 15px;
+  border-radius: 4px;
+  font-size: 0.9rem;
+}
+
+.form-message.success {
+  background-color: #d4edda;
+  color: #155724;
+  border: 1px solid #c3e6cb;
+}
+
+.form-message.error {
+  background-color: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
+}
+
+/* Remove or adapt old .settings-section styles if they conflict or are no longer needed */
+.settings-section, .settings-subsection {
+    /* display: none; */ /* Or remove entirely if new structure replaces them */
+}
+
+/* Notification Settings Specific Styles */
+.notification-settings h3 {
+  font-size: 1.25rem; /* As per image, main title for this section */
+  font-weight: 600;
+  color: #212529;
+  margin-bottom: 8px;
+}
+
+.notification-settings .subsection-description {
+  font-size: 0.95rem;
+  color: #6c757d;
+  margin-bottom: 25px;
+}
+
+.notification-option {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 0;
+  border-bottom: 1px solid #e9ecef; /* Lighter border between options */
+}
+
+.notification-option:last-of-type {
+  border-bottom: none;
+}
+
+.notification-text .notification-label {
+  display: block; /* Ensure it takes full width if needed or just for structure */
+  font-weight: 500; /* Medium weight for the label */
+  color: #343a40;
+  margin-bottom: 4px;
+  font-size: 1rem;
+}
+
+.notification-text .notification-description-small {
+  font-size: 0.85rem;
+  color: #6c757d;
+  margin: 0;
+}
+
+/* Toggle Switch Styles */
+.toggle-switch {
+  position: relative;
+  display: inline-block;
+  width: 50px; /* Width of the toggle */
+  height: 28px; /* Height of the toggle */
+  cursor: pointer;
+}
+
+.toggle-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.toggle-slider {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc; /* Default background of the slider (off state) */
+  border-radius: 34px; /* Makes it pill-shaped */
+  transition: .4s;
+}
+
+.toggle-slider:before {
+  position: absolute;
+  content: "";
+  height: 20px; /* Size of the knob */
+  width: 20px;  /* Size of the knob */
+  left: 4px;    /* Position of the knob when off */
+  bottom: 4px;  /* Position of the knob when off */
+  background-color: white;
+  border-radius: 50%; /* Makes the knob circular */
+  transition: .4s;
+}
+
+.toggle-switch input:checked + .toggle-slider {
+  background-color: #007bff; /* Active color (blue, matches button) */
+}
+
+.toggle-switch input:focus + .toggle-slider {
+  box-shadow: 0 0 1px #007bff;
+}
+
+.toggle-switch input:checked + .toggle-slider:before {
+  transform: translateX(22px); /* How far the knob moves */
+}
+
+/* Adjust the .notification-settings .form-actions if the button is now text-based and needs different alignment */
+.notification-settings .form-actions {
+    text-align: right; /* Changed back to right to match password button alignment */
+}
+
+/* Ensure form-actions in notification tab still aligns it as desired (e.g., right) */
+.notification-settings .form-actions {
+    text-align: right; 
+}
+
+/* === ADD NEW BILLING STYLES === */
+
+.billing-section { 
+  /* Container for all billing content */
+  display: flex;
+  flex-direction: column;
+  gap: 30px; /* Spacing between subsections */
+}
+
+.billing-section .settings-subsection {
+    margin-bottom: 0; /* Remove default margin if gap is used */
+    padding-bottom: 20px; /* Optional padding */
+    border-bottom: 1px solid #e9ecef; /* Optional separator */
+}
+.billing-section .settings-subsection:last-child {
+    border-bottom: none;
+}
+
+.billing-section .settings-subsection h3 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #212529;
+    margin-bottom: 15px;
+}
+.billing-section .settings-subsection .section-description,
+.billing-section .settings-subsection .subsection-description { /* Catch both potential class names */
+    font-size: 0.95rem;
+    color: #6c757d;
+    margin-bottom: 20px;
+}
+
+/* New Subscription Plans */
+.subscription-plans {
+  display: flex; /* Changed to flex for side-by-side */
+  gap: 20px;
+  flex-wrap: wrap; /* Allow wrapping on smaller screens */
+}
+
+.plan-card { /* Re-styling based on new spec */
+  flex: 1;
+  min-width: 240px;
+  background-color: #f8f9fa; /* Light background */
+  border: 1px solid #eaeaea;
+  border-radius: 10px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.3s ease;
+}
+
+.plan-card.active { /* New active class name */
+  background-color: #f0f7fa;
+  border-color: #105570;
+  box-shadow: 0 4px 12px rgba(16, 85, 112, 0.1);
+}
+
+.plan-card .plan-header {
+  margin-bottom: 15px;
+}
+
+.plan-card h4 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 5px;
+}
+
+.plan-card .plan-price {
+  display: flex;
+  align-items: baseline;
+}
+
+.plan-card .plan-price .price {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #105570; 
+}
+
+.plan-card .plan-price .period {
+  font-size: 0.9rem;
+  color: #6c757d;
+  margin-left: 4px;
+}
+
+.plan-card .plan-features {
+  list-style: disc;
+  margin: 0 0 20px 20px;
+  padding: 0;
+  font-size: 0.9rem;
+  color: #495057;
+  flex-grow: 1;
+}
+
+.plan-card .plan-features li {
+  margin-bottom: 8px;
+}
+
+.plan-card .current-plan-button,
+.plan-card .change-plan-button {
+  width: 100%;
+  padding: 10px 15px;
+  font-weight: 500;
+  border-radius: 6px;
+  margin-top: auto;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: background-color 0.2s, border-color 0.2s;
+}
+
+.plan-card .current-plan-button {
+  background-color: #6c757d;
+  color: white;
+  border-color: #6c757d;
+}
+
+.plan-card .change-plan-button {
+  background-color: #105570; /* Primary color from spec */
+  color: white;
+  border-color: #105570;
+}
+.plan-card .change-plan-button:hover:not(:disabled) {
+  background-color: #0a4255;
+  border-color: #0a4255;
+}
+.plan-card button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+/* Payment Methods Section */
+.payment-methods-section .saved-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-bottom: 25px;
+}
+
+.saved-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px;
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  background-color: #fff;
+}
+
+.saved-card.default {
+  border-left: 4px solid #007bff; /* Highlight default card */
+}
+
+.saved-card .card-info {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  font-size: 0.9rem;
+}
+
+.saved-card .card-type {
+  font-weight: 500;
+  min-width: 80px; /* Align text */
+}
+
+.saved-card .card-last4 {
+  font-family: monospace;
+  color: #495057;
+}
+
+.saved-card .card-expiry {
+  color: #6c757d;
+}
+
+.saved-card .default-badge {
+  background-color: #e7f1ff;
+  color: #0056b3;
+  padding: 3px 8px;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  margin-left: 10px;
+}
+
+.saved-card .card-actions button {
+  background: none;
+  border: none;
+  color: #007bff;
+  cursor: pointer;
+  font-size: 0.85rem;
+  margin-left: 15px;
+  padding: 5px;
+}
+
+.saved-card .card-actions button:hover:not(:disabled) {
+  text-decoration: underline;
+}
+
+.saved-card .card-actions button:disabled {
+    color: #6c757d;
+    cursor: not-allowed;
+}
+
+/* Add Payment Method Form */
+.add-payment-method h4 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-top: 20px;
+  margin-bottom: 15px;
+}
+
+.payment-form .form-row.three-columns {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 15px;
+}
+
+/* Billing History Table */
+.billing-history-section .invoice-table {
+  border: 1px solid #dee2e6;
+  border-radius: 6px;
+  overflow: hidden; /* Clip content to border-radius */
+}
+
+.invoice-table-header, .invoice-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr auto; /* Adjust columns as needed */
+  align-items: center;
+  padding: 10px 15px;
+}
+
+.invoice-table-header {
+  background-color: #f8f9fa;
+  font-weight: 600;
+  font-size: 0.85rem;
+  color: #495057;
+  border-bottom: 1px solid #dee2e6;
+}
+
+.invoice-row {
+  border-bottom: 1px solid #e9ecef;
+  font-size: 0.9rem;
+}
+
+.invoice-row:last-child {
+  border-bottom: none;
+}
+
+.invoice-cell {
+  padding: 5px 0; /* Add some vertical padding within cells */
+}
+
+.invoice-cell[data-label="Amount"] {
+    text-align: right;
+}
+
+.invoice-cell[data-label="Actions"] {
+    text-align: right;
+}
+
+.invoice-cell .status-badge {
+  padding: 3px 8px;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  display: inline-block;
+  text-transform: capitalize;
+}
+
+.status-badge.status-paid {
+  background-color: #eaf6ec;
+  color: #28a745;
+}
+.status-badge.status-pending {
+  background-color: #fff8e1;
+  color: #ffc107;
+}
+.status-badge.status-failed {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
+/* Cancel Subscription */
+.cancel-subscription-button {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.cancel-subscription-button:hover:not(:disabled) {
+  background-color: #c82333;
+}
+.cancel-subscription-button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+/* Success Message */
+.success-message {
+    background-color: #d1e7dd; 
+    color: #0f5132;
+    padding: 12px 15px;
+    border: 1px solid #badbcc;
+    border-radius: 6px;
+    margin-top: 20px;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+/* Optional: Add success icon styles if needed */
+
+
+/* Responsive Adjustments (Example) */
+@media (max-width: 768px) {
+    .subscription-plans {
+        grid-template-columns: 1fr; /* Stack plans */
+        flex-direction: column;
+    }
+    .payment-form .form-row.three-columns {
+        grid-template-columns: 1fr; /* Stack card details */
+    }
+    .saved-card {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+    .saved-card .card-actions {
+        width: 100%;
+        text-align: right;
+    }
+    .invoice-table-header {
+        display: none; /* Hide header on small screens */
+    }
+    .invoice-row {
+        grid-template-columns: 1fr; /* Stack cells */
+        padding: 15px;
+        gap: 5px;
+        border-bottom: 1px solid #dee2e6;
+    }
+    .invoice-cell::before {
+        content: attr(data-label); /* Use data-label for headers */
+        font-weight: 600;
+        display: inline-block;
+        margin-right: 10px;
+        min-width: 80px;
+    }
+     .invoice-cell[data-label="Amount"],
+     .invoice-cell[data-label="Actions"] {
+        text-align: left;
+    }
+} 
