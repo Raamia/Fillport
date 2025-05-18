@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import './SettingsContent.css'; // We'll create this for styling
-import { supabase } from '../../../lib/supabaseClient'; // Assuming supabase client is here for future use
 
 // Mock user data (replace with actual props or context later)
 const mockUser = {
@@ -16,7 +15,7 @@ const mockUser = {
     country: 'United States',
   },
   subscription: {
-    plan: 'pro',
+    plan: 'Pro',
   },
   preferences: {
       emailNotifications: true,
@@ -34,9 +33,19 @@ const getCardType = (number) => {
   return 'generic';
 };
 
-const SettingsContent = ({ /* user = mockUser, profile */ }) => {
+const SettingsContent = ({ user, profile }) => {
   // Use mock user for now if props aren't fully wired
-  const user = mockUser;
+  // const userData = user || mockUser; // Let's try to use user and profile directly
+
+  console.log("Render SettingsContent - User:", user); // ADDED FOR DEBUGGING
+  console.log("Render SettingsContent - Profile:", profile); // ADDED FOR DEBUGGING
+
+  const STRIPE_PAYMENT_LINK_PRO = "https://buy.stripe.com/test_8x228r114fJA0Mp1SBcjS00";
+
+  const availablePlans = [
+      { id: 'basic', name: 'Basic', price: '$0', period: '/month', features: ['Up to 10 forms per month','Basic AI autofill','PDF export','Email support'] },
+      { id: 'Pro', name: 'Pro', price: '$19', period: '/month', features: ['Up to 50 forms per month','Advanced AI autofill','PDF export & editing','Priority support','Form templates'] },
+  ];
 
   const [activeTab, setActiveTab] = useState('Billing & Subscription');
 
@@ -47,49 +56,58 @@ const SettingsContent = ({ /* user = mockUser, profile */ }) => {
   const [passwordMessage, setPasswordMessage] = useState({ type: '', text: '' });
   const [isPasswordLoading, setIsPasswordLoading] = useState(false);
 
-  // Notification States
-  const [notificationPreferences, setNotificationPreferences] = useState({
-    emailMaster: user?.preferences?.emailNotifications || true,
-    formUpdates: user?.preferences?.formUpdates || true,
-    deadlineReminders: user?.preferences?.deadlineReminders || true,
-    newFeatures: user?.preferences?.newFeatures || true,
-  });
+  // Notification States - Initialized empty, to be populated by useEffect
+  const [notificationPreferences, setNotificationPreferences] = useState({});
   const [notificationMessage, setNotificationMessage] = useState({ type: '', text: '' });
   const [isNotificationLoading, setIsNotificationLoading] = useState(false);
 
-  // -- NEW BILLING STATES --
-  const [billingInfo, setBillingInfo] = useState({
-    cardName: user?.billing?.cardName || "",
-    cardNumber: "", expiryMonth: "", expiryYear: "", cvv: "",
-  });
-  const [billingAddress, setBillingAddress] = useState({
-    address1: user?.billing?.address1 || "", address2: user?.billing?.address2 || "",
-    city: user?.billing?.city || "", state: user?.billing?.state || "",
-    zipCode: user?.billing?.zipCode || "", country: user?.billing?.country || "United States",
-  });
-  const [currentPlan, setCurrentPlan] = useState(user?.subscription?.plan || "pro");
-  const [savedCards, setSavedCards] = useState([
-    { id: "card_1", cardName: "John Doe", last4: "4242", expiryMonth: "12", expiryYear: "2025", type: "visa", isDefault: true },
-    { id: "card_2", cardName: "John Doe", last4: "1234", expiryMonth: "10", expiryYear: "2026", type: "mastercard", isDefault: false },
-  ]);
-  const [billingHistory, setBillingHistory] = useState([
-      { id: 'inv1', date: '2023-04-01', amount: '$9.00', status: 'Paid' },
-      { id: 'inv2', date: '2023-03-01', amount: '$9.00', status: 'Paid' },
-  ]);
-  const [saving, setSaving] = useState(false); // General saving state for billing actions
-  const [successMessage, setSuccessMessage] = useState(""); // Success feedback message
-  // -- END NEW BILLING STATES --
-
-  // Plan definitions aligned with the NEW spec ($9/mo Basic)
-  const availablePlans = [
-      { id: 'basic', name: 'Basic', price: '$0', period: '/month', features: ['Up to 10 forms per month','Basic AI autofill','PDF export','Email support'] },
-      { id: 'pro', name: 'Pro', price: '$19', period: '/month', features: ['Up to 50 forms per month','Advanced AI autofill','PDF export & editing','Priority support','Form templates'] },
-      // Enterprise can be added back if needed
-  ];
+  // Billing States - Initialized with defaults, to be populated by useEffect
+  const [billingInfo, setBillingInfo] = useState({ cardName: "", cardNumber: "", expiryMonth: "", expiryYear: "", cvv: "" });
+  const [billingAddress, setBillingAddress] = useState({ address1: "", address2: "", city: "", state: "", zipCode: "", country: "United States" });
+  const [currentPlan, setCurrentPlan] = useState("basic"); // Default, will be updated from profile
+  const [savedCards, setSavedCards] = useState([]); // Default, will be updated from profile
+  const [billingHistory, setBillingHistory] = useState([]); // Default, will be updated from profile
+  const [saving, setSaving] = useState(false); 
+  const [successMessage, setSuccessMessage] = useState("");
 
   useEffect(() => {
-    setActiveTab('Billing & Subscription');
-  }, []); // Run only once on mount
+    console.log("useEffect [user, profile] triggered in SettingsContent.");
+    console.log("useEffect - User:", user);
+    console.log("useEffect - Profile:", profile);
+
+    if (user && profile) {
+        setNotificationPreferences({
+            emailMaster: profile.preferences?.emailNotifications !== undefined ? profile.preferences.emailNotifications : true,
+            formUpdates: profile.preferences?.formUpdates !== undefined ? profile.preferences.formUpdates : true,
+            deadlineReminders: profile.preferences?.deadlineReminders !== undefined ? profile.preferences.deadlineReminders : true,
+            newFeatures: profile.preferences?.newFeatures !== undefined ? profile.preferences.newFeatures : true,
+        });
+        setBillingInfo(prev => ({
+            ...prev,
+            cardName: profile.billing?.cardName || "",
+        }));
+        setBillingAddress(prev => ({
+            ...prev,
+            address1: profile.billing?.address1 || "", 
+            address2: profile.billing?.address2 || "",
+            city: profile.billing?.city || "", 
+            state: profile.billing?.state || "",
+            zipCode: profile.billing?.zipCode || "", 
+            country: profile.billing?.country || "United States",
+        }));
+        setCurrentPlan(profile.current_subscription_plan || "basic");
+        setSavedCards(profile.billing?.savedCards || []); 
+        setBillingHistory(profile.billing?.billingHistory || []);
+    } else {
+        // Fallback if user/profile is not available (e.g., initial load, or if not logged in)
+        setCurrentPlan("basic");
+        setNotificationPreferences({ emailMaster: true, formUpdates: true, deadlineReminders: true, newFeatures: true});
+        setBillingInfo({ cardName: "", cardNumber: "", expiryMonth: "", expiryYear: "", cvv: "" });
+        setBillingAddress({ address1: "", address2: "", city: "", state: "", zipCode: "", country: "United States" });
+        setSavedCards([]);
+        setBillingHistory([]);
+    }
+  }, [user, profile]);
 
   const handleTabClick = (tabName) => {
     setActiveTab(tabName);
@@ -172,13 +190,21 @@ const SettingsContent = ({ /* user = mockUser, profile */ }) => {
     }, 1000);
   };
 
-  const handleChangePlan = (plan) => {
-    if (saving || plan === currentPlan) return;
-    console.log("Changing plan to:", plan);
+  const handleChangePlan = (planId) => {
+    if (saving || planId === currentPlan || (planId === 'Pro' && currentPlan === 'Pro')) return;
+    
+    if (planId === 'Pro') {
+        handleUpgradeToProViaPaymentLink();
+        return;
+    }
+
+    // Handle other plan changes (e.g., downgrade to Basic) if needed
+    // This part remains a simulation for now, or can be built out further
+    console.log("Changing plan to:", planId);
     setSaving(true); setSuccessMessage("");
     setTimeout(() => {
-      setCurrentPlan(plan);
-      setSuccessMessage(`Your subscription has been changed to ${plan.charAt(0).toUpperCase() + plan.slice(1)} plan`);
+      setCurrentPlan(planId);
+      setSuccessMessage(`Your subscription has been changed to ${planId.charAt(0).toUpperCase() + planId.slice(1)} plan`);
       setSaving(false);
       setTimeout(() => setSuccessMessage(""), 3000);
     }, 1000);
@@ -190,6 +216,22 @@ const SettingsContent = ({ /* user = mockUser, profile */ }) => {
   const handleNotificationChange = (e) => { const { name, checked } = e.target; setNotificationPreferences(prev => ({...prev, [name]:checked})); /* Add full logic back */ };
   const handleSaveNotificationPreferences = async (e) => { if(e) e.preventDefault(); console.log("Save notifications submitted"); /* Add full logic back */ };
 
+  const handleUpgradeToProViaPaymentLink = () => {
+    if (!user || !user.id || !user.email) {
+      alert("User information not available. Please ensure you are logged in and try again.");
+      setSaving(false);
+      return;
+    }
+    setSaving(true); 
+    setSuccessMessage("Redirecting to Stripe...");
+
+    const params = new URLSearchParams({
+      client_reference_id: user.id,
+      prefilled_email: user.email,
+    });
+    const paymentLinkUrl = `${STRIPE_PAYMENT_LINK_PRO}?${params.toString()}`;
+    window.location.href = paymentLinkUrl; 
+  };
 
   const renderTabContent = () => {
     switch (activeTab) {
@@ -309,7 +351,7 @@ const SettingsContent = ({ /* user = mockUser, profile */ }) => {
               <h3>Subscription Plan</h3>
               <div className="subscription-plans">
                 {availablePlans.map(plan => (
-                  <div key={plan.id} className={`plan-card ${currentPlan === plan.id ? "active" : ""}`}> {/* Updated class */} 
+                  <div key={plan.id} className={`plan-card ${currentPlan === plan.id ? "active" : ""} ${plan.id === 'Pro' && currentPlan !== 'Pro' ? "pro-upgrade-card" : ""}`}> {/* Updated class */} 
                     <div className="plan-header">
                       <h4>{plan.name}</h4>
                       <div className="plan-price">
@@ -321,10 +363,17 @@ const SettingsContent = ({ /* user = mockUser, profile */ }) => {
                       {plan.features.map((feature, index) => <li key={index}>{feature}</li>)}
                     </ul>
                     {currentPlan === plan.id ? (
-                      <button className="current-plan-button" disabled>Current Plan</button>
+                      <button className="current-plan-button" disabled>{plan.id === 'Pro' ? 'Pro Plan Active' : 'Current Plan'}</button>
                     ) : (
-                      <button className="change-plan-button" onClick={() => handleChangePlan(plan.id)} disabled={saving}>
-                        {saving ? "Processing..." : `Switch to ${plan.name}`}
+                      <button 
+                        className={`change-plan-button ${plan.id === 'Pro' ? 'btn-primary' : ''}`} 
+                        onClick={() => handleChangePlan(plan.id)} 
+                        disabled={saving || (plan.id === 'Pro' && currentPlan === 'Pro')}
+                      >
+                        {plan.id === 'Pro' ? 
+                            (saving ? "Redirecting to Stripe..." : "Upgrade to Pro") : 
+                            (saving ? "Processing..." : `Switch to ${plan.name}`)
+                        }
                       </button>
                     )}
                   </div>
@@ -420,7 +469,7 @@ const SettingsContent = ({ /* user = mockUser, profile */ }) => {
             </div>
 
             {/* Success Message Area */} 
-            {successMessage && ( <div className="success-message">{successMessage}</div> )}
+            {successMessage && ( <div className={`form-message ${saving ? 'neutral' : 'success'}`}>{successMessage}</div> )}
 
           </div> // End billing-section
         );
@@ -447,5 +496,3 @@ const SettingsContent = ({ /* user = mockUser, profile */ }) => {
 };
 
 export default SettingsContent; 
-
-//Fillport acts like a "Common App" for common administrative and government forms. Enter your information once into a secure profile, and Fillport will automatically populate various standard forms for you, saving significant time and reducing mis

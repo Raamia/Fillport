@@ -54,7 +54,7 @@ const DashboardPage = () => {
 
         const { data: userProfile, error: profileError } = await supabase
           .from('profiles')
-          .select('first_name, last_name, has_completed_onboarding') 
+          .select('*')
           .eq('id', currentUser.id)
           .single()
 

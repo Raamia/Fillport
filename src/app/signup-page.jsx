@@ -11,7 +11,6 @@ const SignupPage = () => {
   const [isLoading, setIsLoading] = useState(false)
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
-  const [name, setName] = useState("")
   const [error, setError] = useState(null)
   const [message, setMessage] = useState("")
 
@@ -82,19 +81,6 @@ const SignupPage = () => {
         {error && <p className="auth-message error">Error: {error}</p>}
 
         <form className="auth-form" onSubmit={handleSubmit}>
-          <div className="auth-form-group">
-            <label htmlFor="name">Full Name</label>
-            <input 
-              type="text" 
-              id="name" 
-              placeholder="John Doe" 
-              required 
-              autoComplete="name" 
-              value={name} 
-              onChange={(e) => setName(e.target.value)} 
-            />
-          </div>
-
           <div className="auth-form-group">
             <label htmlFor="email">Email</label>
             <input 
