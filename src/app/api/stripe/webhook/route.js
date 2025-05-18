@@ -82,6 +82,45 @@ export async function POST(req) {
       }
       break;
     
+    case 'customer.subscription.deleted':
+      const subscription = event.data.object;
+      const customerSubscriptionId = subscription.id;
+      
+      try {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        const { data: profiles, error: findError } = await supabaseAdmin
+          .from('profiles')
+          .select('id')
+          .eq('stripe_subscription_id', customerSubscriptionId)
+          .single();
+
+        if (findError || !profiles) {
+          console.error('Error finding profile for subscription:', customerSubscriptionId);
+          return NextResponse.json({ received: true, error: 'Profile not found' });
+        }
+
+        // Update the profile to reflect canceled status
+        const { error: updateError } = await supabaseAdmin
+          .from('profiles')
+          .update({
+            current_subscription_plan: 'basic',
+            subscription_status: 'canceled',
+            stripe_subscription_id: null, // Clear the subscription ID
+          })
+          .eq('id', profiles.id);
+
+        if (updateError) {
+          console.error('Error updating profile after cancellation:', updateError);
+          return NextResponse.json({ received: true, error: 'Profile update failed' });
+        }
+
+        console.log('Successfully processed subscription cancellation for user:', profiles.id);
+      } catch (error) {
+        console.error('Error processing subscription cancellation:', error);
+        return NextResponse.json({ received: true, error: 'Processing error' });
+      }
+      break;
+
     // TODO: Handle other event types as needed for your application
     // For example, 'customer.subscription.updated', 'customer.subscription.deleted'
     // to manage plan changes, cancellations, etc.

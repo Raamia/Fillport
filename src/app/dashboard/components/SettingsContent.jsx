@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './SettingsContent.css'; // We'll create this for styling
+import { toast } from 'react-hot-toast';
 
 // Mock user data (replace with actual props or context later)
 const mockUser = {
@@ -190,7 +191,7 @@ const SettingsContent = ({ user, profile }) => {
     }, 1000);
   };
 
-  const handleChangePlan = (planId) => {
+  const handleChangePlan = async (planId) => {
     if (saving || planId === currentPlan || (planId === 'Pro' && currentPlan === 'Pro')) return;
     
     if (planId === 'Pro') {
@@ -198,10 +199,43 @@ const SettingsContent = ({ user, profile }) => {
         return;
     }
 
-    // Handle other plan changes (e.g., downgrade to Basic) if needed
-    // This part remains a simulation for now, or can be built out further
+    // Handle downgrade to Basic
+    if (planId === 'basic' && currentPlan === 'Pro') {
+      setSaving(true);
+      setSuccessMessage("");
+
+      try {
+        const response = await fetch('/api/stripe/cancel-subscription', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            userId: user.id,
+          }),
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          throw new Error(data.error || 'Failed to cancel subscription');
+        }
+
+        setSuccessMessage("Your subscription will be canceled at the end of the billing period.");
+        // Don't update currentPlan yet - it will be updated by the webhook when the cancellation takes effect
+      } catch (error) {
+        console.error('Error canceling subscription:', error);
+        toast.error(error.message || 'Failed to cancel subscription');
+      } finally {
+        setSaving(false);
+      }
+      return;
+    }
+
+    // Handle other plan changes if needed
     console.log("Changing plan to:", planId);
-    setSaving(true); setSuccessMessage("");
+    setSaving(true); 
+    setSuccessMessage("");
     setTimeout(() => {
       setCurrentPlan(planId);
       setSuccessMessage(`Your subscription has been changed to ${planId.charAt(0).toUpperCase() + planId.slice(1)} plan`);
@@ -379,93 +413,6 @@ const SettingsContent = ({ user, profile }) => {
                   </div>
                 ))}
               </div>
-            </div>
-
-            {/* Payment Methods Section */} 
-            <div className="payment-methods-section settings-subsection">
-              <h3>Payment Methods</h3>
-              <p className="section-description">Manage your payment methods for subscription billing</p>
-              {savedCards.length > 0 && (
-                <div className="saved-cards">
-                  {savedCards.map((card) => (
-                    <div key={card.id} className={`saved-card ${card.isDefault ? "default" : ""}`}>
-                      <div className="card-info">
-                        <span className="card-type">{card.type.charAt(0).toUpperCase() + card.type.slice(1)}</span>
-                        <span className="card-last4">**** **** **** {card.last4}</span>
-                        <span className="card-expiry">Expires {card.expiryMonth}/{card.expiryYear}</span>
-                        {card.isDefault && <span className="default-badge">Default</span>}
-                      </div>
-                      <div className="card-actions">
-                        {!card.isDefault && (
-                          <button onClick={() => handleSetDefaultCard(card.id)} disabled={saving}>Set as Default</button>
-                        )}
-                        <button onClick={() => handleRemoveCard(card.id)} disabled={saving || (card.isDefault && savedCards.length <= 1)}>Remove</button>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              )}
-              <div className="add-payment-method">
-                <h4>Add Payment Method</h4>
-                <form className="payment-form settings-form" onSubmit={handleAddPaymentMethod}>
-                  <div className="form-group">
-                      <label htmlFor="cardName">Name on Card</label>
-                      <input type="text" id="cardName" name="cardName" value={billingInfo.cardName} onChange={handleBillingInfoChange} required />
-                  </div>
-                  <div className="form-group">
-                      <label htmlFor="cardNumber">Card Number</label>
-                      <input type="text" id="cardNumber" name="cardNumber" value={billingInfo.cardNumber} onChange={handleBillingInfoChange} pattern="[0-9]{13,16}" title="Enter a valid card number" required />
-                  </div>
-                  <div className="form-row three-columns"> {/* Example class for layout */} 
-                      <div className="form-group">
-                          <label htmlFor="expiryMonth">Expiry Month (MM)</label>
-                          <input type="text" id="expiryMonth" name="expiryMonth" value={billingInfo.expiryMonth} onChange={handleBillingInfoChange} pattern="(0[1-9]|1[0-2])" title="Enter MM" required />
-                      </div>
-                      <div className="form-group">
-                          <label htmlFor="expiryYear">Expiry Year (YYYY)</label>
-                          <input type="text" id="expiryYear" name="expiryYear" value={billingInfo.expiryYear} onChange={handleBillingInfoChange} pattern="20[2-9][0-9]" title="Enter YYYY (e.g., 2025)" required />
-                      </div>
-                      <div className="form-group">
-                          <label htmlFor="cvv">CVV</label>
-                          <input type="text" id="cvv" name="cvv" value={billingInfo.cvv} onChange={handleBillingInfoChange} pattern="[0-9]{3,4}" title="Enter 3 or 4 digit CVV" required />
-                      </div>
-                  </div>
-                  {/* Address fields can be added here if needed, or assumed to be same as profile */}
-                  <div className="form-actions">
-                      <button type="submit" className="btn btn-primary" disabled={saving}>{saving ? "Adding..." : "Add Payment Method"}</button>
-                  </div>
-                </form>
-              </div>
-            </div>
-
-            {/* Billing History Section */} 
-            <div className="billing-history-section settings-subsection">
-              <h3>Billing History</h3>
-              <p className="section-description">View and download your past invoices</p>
-              <div className="invoice-table">
-                <div className="invoice-table-header">
-                  <div className="invoice-cell">Invoice</div> <div className="invoice-cell">Date</div> <div className="invoice-cell">Amount</div> <div className="invoice-cell">Status</div> <div className="invoice-cell">Actions</div>
-                </div>
-                <div className="invoice-table-body">
-                  {billingHistory.map(invoice => (
-                    <div key={invoice.id} className="invoice-row">
-                      <div className="invoice-cell" data-label="Invoice">#{invoice.id}</div>
-                      <div className="invoice-cell" data-label="Date">{invoice.date}</div>
-                      <div className="invoice-cell" data-label="Amount">{invoice.amount}</div>
-                      <div className="invoice-cell" data-label="Status"><span className={`status-badge status-${invoice.status.toLowerCase()}`}>{invoice.status}</span></div>
-                      <div className="invoice-cell" data-label="Actions"><button className="btn-text" disabled>Download</button></div>
-                    </div>
-                  ))}
-                  {billingHistory.length === 0 && <p>No billing history found.</p>}
-                </div>
-              </div>
-            </div>
-
-            {/* Cancel Subscription Section */} 
-            <div className="cancel-subscription-section settings-subsection">
-                <h3>Cancel Subscription</h3>
-                <p className="section-description">You can cancel your subscription at any time. Your plan will remain active until the end of your billing period.</p>
-                <button className="cancel-subscription-button" disabled>Cancel Subscription</button>
             </div>
 
             {/* Success Message Area */} 
