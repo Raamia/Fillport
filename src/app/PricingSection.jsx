@@ -1,4 +1,14 @@
+"use client" // Ensure this is a client component if using hooks like useRouter
+
+import { useRouter } from 'next/navigation'; // Import useRouter
+
 const PricingSection = () => {
+    const router = useRouter(); // Get router instance
+
+    const handleNavigateToSignup = () => {
+        router.push('/signup');
+    };
+
     return (
       <section id="pricing" className="pricing-section">
         <h2 className="pricing-title scroll-trigger">Simple, Transparent Pricing</h2>
@@ -20,7 +30,9 @@ const PricingSection = () => {
               <li>PDF export</li>
               <li>Email support</li>
             </ul>
-            <button className="pricing-cta">Get Started</button>
+            <button className="pricing-cta" onClick={handleNavigateToSignup}>
+              Get Started
+            </button>
           </div>
   
           <div className="pricing-card featured scroll-trigger">
@@ -41,7 +53,9 @@ const PricingSection = () => {
               <li>Priority support</li>
               <li>Form templates</li>
             </ul>
-            <button className="pricing-cta">Start Free Trial</button>
+            <button className="pricing-cta" onClick={handleNavigateToSignup}>
+              Start Free Trial
+            </button>
           </div>
         </div>
       </section>

@@ -1,0 +1,215 @@
+/* Styles for the form filling page */
+
+/* General Page Setup */
+body {
+  /* Assuming a global font like Inter or a system font stack is preferred */
+  /* font-family: 'Inter', sans-serif; -- If Inter is globally available */
+  background-color: #F7F9FC; /* Light gray-blue background */
+  color: #333;
+}
+
+.fill-form-page-container {
+  padding: 24px 32px; /* Increased padding */
+  max-width: 1366px; /* Wider max-width for modern screens */
+  margin: 0 auto;
+}
+
+/* Header Styling */
+.fill-form-header {
+  margin-bottom: 32px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid #E0E7FF; /* Lighter, bluish border */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.fill-form-header h1 {
+  font-size: 2.25rem; /* Larger title */
+  font-weight: 700;
+  color: #2D3748; /* Darker, more professional color */
+  margin-bottom: 8px;
+}
+
+.fill-form-header p {
+  font-size: 1rem;
+  color: #718096; /* Softer gray for description */
+  line-height: 1.6;
+}
+
+/* Layout: Main content area */
+.fill-form-layout {
+  display: flex;
+  gap: 32px; /* Increased gap */
+}
+
+/* Base Card Styling (for viewer and sidebar) */
+.form-viewer-section,
+.profile-data-sidebar {
+  background-color: #ffffff; /* White background for cards */
+  padding: 28px; /* Increased padding */
+  border-radius: 12px; /* Softer, larger border-radius */
+  border: 1px solid #E2E8F0; /* Light gray border */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); /* Subtle shadow */
+}
+
+.form-viewer-section {
+  flex: 3;
+  display: flex;
+  flex-direction: column; /* Ensure content flows top to bottom */
+}
+
+.profile-data-sidebar {
+  flex: 1;
+  height: fit-content;
+}
+
+/* Section Titles */
+.form-viewer-section h2,
+.profile-data-sidebar h2 {
+  font-size: 1.5rem; /* Slightly larger section titles */
+  font-weight: 600;
+  margin-top: 0;
+  margin-bottom: 20px;
+  color: #2D3748;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #E2E8F0;
+}
+
+/* PDF Rendering Area */
+.pdf-render-area {
+  background-color: #F7F9FC; /* Light background for the PDF itself */
+  border: 1px solid #E2E8F0;
+  border-radius: 8px; /* Consistent radius */
+  padding: 20px;
+  min-height: 550px; /* Adjusted min-height */
+  display: flex;
+  flex-direction: column; /* Stack image and controls */
+  align-items: center;
+  justify-content: flex-start; /* Start content from top */
+  text-align: center;
+  color: #718096;
+  flex-grow: 1; /* Allow it to take available space in viewer section */
+}
+
+.pdf-render-area img {
+  max-width: 100%;
+  border: 1px solid #CBD5E0; /* Slightly darker border for the PDF image */
+  border-radius: 4px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  margin-bottom: 20px;
+}
+
+/* PDF Navigation Controls */
+.pdf-navigation-controls {
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px; /* Gap between buttons and text */
+  width: 100%;
+  padding: 10px 0;
+}
+
+.pdf-navigation-controls span {
+  font-size: 0.95rem;
+  color: #4A5568;
+  font-weight: 500;
+}
+
+/* Profile Info Sidebar */
+.profile-info-card {
+  margin-bottom: 24px;
+}
+
+.profile-info-card p {
+  margin-bottom: 12px;
+  font-size: 0.95rem;
+  line-height: 1.7;
+  color: #4A5568; /* Slightly darker text for better readability */
+}
+
+.profile-info-card strong {
+  color: #2D3748;
+  font-weight: 600;
+}
+
+/* === Enhanced Button Styles === */
+.btn-primary,
+.btn-secondary {
+  padding: 10px 20px; /* Uniform padding */
+  border: none;
+  border-radius: 8px; /* Softer radius */
+  cursor: pointer;
+  font-size: 0.95rem;
+  font-weight: 600;
+  transition: all 0.2s ease-in-out;
+  display: inline-flex; /* For aligning icons if added */
+  align-items: center;
+  justify-content: center;
+  gap: 8px; /* Space for icons */
+}
+
+/* Primary Button */
+.btn-primary {
+  background-color: #4A90E2; /* New primary blue */
+  color: white;
+  box-shadow: 0 2px 4px rgba(74, 144, 226, 0.2);
+}
+
+.btn-primary:hover {
+  background-color: #357ABD; /* Darker blue */
+  box-shadow: 0 4px 8px rgba(74, 144, 226, 0.3);
+}
+
+.btn-primary:disabled {
+  background-color: #A0C7E8; /* Lighter, desaturated blue */
+  color: #E0E7FF;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+/* Secondary Button */
+.btn-secondary {
+  background-color: #E2E8F0; /* Light gray */
+  color: #2D3748; /* Dark text for contrast */
+  border: 1px solid #CBD5E0;
+}
+
+.btn-secondary:hover {
+  background-color: #CBD5E0; /* Slightly darker gray */
+  border-color: #A0AEC0;
+}
+
+.profile-data-sidebar .btn-secondary,
+.profile-data-sidebar .btn-primary {
+  width: 100%; /* Make sidebar buttons full width */
+  margin-top: 12px;
+}
+
+/* Loading and Error States */
+.loading-container,
+.error-container {
+  display: flex;
+  flex-direction: column; /* Stack message and button */
+  justify-content: center;
+  align-items: center;
+  min-height: 70vh;
+  font-size: 1.25rem;
+  color: #4A5568;
+  text-align: center;
+  padding: 20px;
+}
+
+.error-container {
+  color: #E53E3E; /* More prominent error color */
+}
+
+.error-container button {
+  margin-top: 20px;
+}
+
+/* Ensure back to dashboard button in header uses new styles */
+.fill-form-header .btn-secondary {
+  margin-top: 0; /* Reset margin if it was specific to header */
+} 

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './SettingsContent.css'; // We'll create this for styling
 import { toast } from 'react-hot-toast';
+import { supabase } from '../../../lib/supabaseClient'; // Corrected path to supabaseClient
 
 // Mock user data (replace with actual props or context later)
 const mockUser = {
@@ -245,10 +246,108 @@ const SettingsContent = ({ user, profile }) => {
   };
   // --- END NEW BILLING HANDLERS ---
 
-  // ... (handlePasswordUpdate, handleNotificationChange, handleSaveNotificationPreferences functions - simplified below for brevity) ...
-  const handlePasswordUpdate = async (e) => { e.preventDefault(); console.log("Password update submitted"); /* Add full logic back */ };
-  const handleNotificationChange = (e) => { const { name, checked } = e.target; setNotificationPreferences(prev => ({...prev, [name]:checked})); /* Add full logic back */ };
-  const handleSaveNotificationPreferences = async (e) => { if(e) e.preventDefault(); console.log("Save notifications submitted"); /* Add full logic back */ };
+  const handlePasswordUpdate = async (e) => {
+    e.preventDefault();
+    setIsPasswordLoading(true);
+    setPasswordMessage({ type: '', text: '' });
+
+    if (!currentPassword || !newPassword || !confirmNewPassword) {
+      setPasswordMessage({ type: 'error', text: 'All password fields are required.' });
+      setIsPasswordLoading(false);
+      return;
+    }
+
+    if (newPassword !== confirmNewPassword) {
+      setPasswordMessage({ type: 'error', text: 'New passwords do not match.' });
+      setIsPasswordLoading(false);
+      return;
+    }
+
+    if (newPassword.length < 6) {
+      setPasswordMessage({ type: 'error', text: 'New password must be at least 6 characters long.' });
+      setIsPasswordLoading(false);
+      return;
+    }
+
+    if (!user || !user.email) {
+        setPasswordMessage({ type: 'error', text: 'User email not found. Cannot verify current password.' });
+        setIsPasswordLoading(false);
+        return;
+    }
+
+    try {
+      // Step 1: Verify current password by attempting to sign in with it.
+      const { error: signInError } = await supabase.auth.signInWithPassword({
+        email: user.email,
+        password: currentPassword,
+      });
+
+      if (signInError) {
+        // Check for specific invalid credentials error, though Supabase might return a generic one.
+        // For now, any error here implies the current password was incorrect.
+        console.error("Current password verification failed:", signInError);
+        setPasswordMessage({ type: 'error', text: 'Current password is incorrect. Please try again.' });
+        setIsPasswordLoading(false);
+        return;
+      }
+
+      // Step 2: If current password verification is successful, update to the new password.
+      // The session is already refreshed by the successful signInWithPassword.
+      const { error: updateError } = await supabase.auth.updateUser({ password: newPassword });
+
+      if (updateError) {
+        throw updateError; // Let the generic catch block handle this.
+      }
+
+      setPasswordMessage({ type: 'success', text: 'Password updated successfully!' });
+      setCurrentPassword('');
+      setNewPassword('');
+      setConfirmNewPassword('');
+      toast.success('Password updated successfully!');
+
+    } catch (error) {
+      console.error("Error during password update process:", error);
+      // More specific error for the update itself if it failed after successful verification
+      const errorMessage = error.message.includes('AuthApiError') || error.message.includes('credentials incorrect') 
+                           ? 'Current password is incorrect. Please try again.' 
+                           : error.message || 'Failed to update password. Please try again.';
+      setPasswordMessage({ type: 'error', text: errorMessage });
+      toast.error(errorMessage);
+    } finally {
+      setIsPasswordLoading(false);
+    }
+  };
+
+  const handleNotificationChange = (e) => { 
+    const { name, checked } = e.target; 
+    setNotificationPreferences(prev => ({...prev, [name]:checked})); 
+    // No immediate save, relies on Save Preferences button
+  };
+  
+  const handleSaveNotificationPreferences = async (e) => { 
+    if(e) e.preventDefault(); 
+    if (!user || !profile) {
+      setNotificationMessage({ type: 'error', text: 'User profile not loaded.' });
+      return;
+    }
+    setIsNotificationLoading(true);
+    setNotificationMessage({ type: '', text: '' });
+    try {
+      const { error } = await supabase
+        .from('profiles')
+        .update({ preferences: notificationPreferences })
+        .eq('id', user.id);
+      if (error) throw error;
+      setNotificationMessage({ type: 'success', text: 'Notification preferences saved!' });
+      toast.success('Notification preferences saved!');
+    } catch (error) {
+      console.error('Error saving notification preferences:', error);
+      setNotificationMessage({ type: 'error', text: error.message || 'Failed to save preferences.' });
+      toast.error(error.message || 'Failed to save preferences.');
+    } finally {
+      setIsNotificationLoading(false);
+    }
+  };
 
   const handleUpgradeToProViaPaymentLink = () => {
     if (!user || !user.id || !user.email) {
@@ -443,3 +542,4 @@ const SettingsContent = ({ user, profile }) => {
 };
 
 export default SettingsContent; 
+ 

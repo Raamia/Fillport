@@ -202,12 +202,14 @@
 }
 
 .summary-card .icon-container {
-  padding: 12px;
-  border-radius: 50%;
+  padding: 12px; /* Reduced padding slightly for a tighter look */
+  border-radius: 8px; /* Rounded corners for the square container */
   margin-right: 15px;
   display: flex;
   align-items: center;
   justify-content: center;
+  width: 48px; /* Explicit width */
+  height: 48px; /* Explicit height */
 }
 
 .summary-card .icon-container svg {
@@ -216,10 +218,11 @@
   color: white;
 }
 
-.summary-card .completed .icon-container { background-color: #28a745; } /* Green */
-.summary-card .in-progress .icon-container { background-color: #007bff; } /* Blue */
-.summary-card .pending-review .icon-container { background-color: #ffc107; } /* Yellow */
-.summary-card .upcoming-deadlines .icon-container { background-color: #dc3545; } /* Red */
+/* Corrected selectors for background colors */
+.summary-card.completed .icon-container { background-color: #28a745; } /* Green */
+.summary-card.in-progress .icon-container { background-color: #007bff; } /* Blue */
+.summary-card.pending-review .icon-container { background-color: #ffc107; } /* Yellow */
+.summary-card.upcoming-deadlines .icon-container { background-color: #dc3545; } /* Red */
 
 .summary-card .info h3 {
   font-size: 1.5rem;
@@ -497,5 +500,100 @@
 .header-user.dropdown-user-info-header .user-info .user-name { ... }
 .header-user.dropdown-user-info-header .user-info .user-info .user-email { ... }
 */
+
+/* Templates Section Styles */
+.templates-section {
+  padding: 20px;
+  background-color: #fff; /* Optional: if you want a white background for this section */
+  border-radius: 8px;
+  /* box-shadow: 0 2px 10px rgba(0,0,0,0.05); */ /* Optional: if you want a subtle shadow */
+  margin-top: 20px; /* Space from elements above */
+}
+
+.templates-header {
+  margin-bottom: 24px;
+}
+
+.templates-header h1 {
+  font-size: 1.8rem;
+  font-weight: 600;
+  margin-bottom: 4px;
+  color: #212529;
+}
+
+.templates-header p {
+  font-size: 1rem;
+  color: #6c757d;
+}
+
+.templates-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Responsive grid */
+  gap: 20px;
+}
+
+.template-card {
+  background-color: #ffffff;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* Pushes button to the bottom */
+  transition: box-shadow 0.2s ease-in-out, transform 0.2s ease-in-out;
+}
+
+.template-card:hover {
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  transform: translateY(-2px);
+}
+
+.template-card-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.template-card-header .template-icon {
+  width: 24px;
+  height: 24px;
+  color: #105570; /* Brand color */
+  margin-right: 10px;
+  stroke-width: 2;
+}
+
+.template-card-header h3 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #333;
+  margin: 0;
+}
+
+.template-description {
+  font-size: 0.9rem;
+  color: #555;
+  margin-bottom: 16px;
+  flex-grow: 1; /* Allows description to take up space, pushing button down */
+  line-height: 1.5;
+}
+
+.template-select-button {
+  /* Using a more generic .btn-primary approach if you have one */
+  /* If not, define styles here or use existing button styles */
+  padding: 10px 15px;
+  background-color: #105570; /* Brand primary color */
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  text-align: center;
+  font-weight: 500;
+  transition: background-color 0.2s ease;
+  width: 100%; /* Make button full width of card padding */
+}
+
+.template-select-button:hover {
+  background-color: #083c5a; /* Darker shade for hover */
+}
 
 /* ... rest of CSS ... */ 
