@@ -52,7 +52,7 @@ export async function POST(req) {
 
       if (paymentStatus === 'paid') {
         try {
-          const { data, error } = await supabaseAdmin
+          const { error } = await supabaseAdmin
             .from('profiles')
             .update({
               stripe_customer_id: stripeCustomerId,
@@ -87,7 +87,6 @@ export async function POST(req) {
       const customerSubscriptionId = subscription.id;
       
       try {
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const { data: profiles, error: findError } = await supabaseAdmin
           .from('profiles')
           .select('id')
