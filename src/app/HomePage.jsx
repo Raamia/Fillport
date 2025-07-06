@@ -5,8 +5,8 @@ import { useRouter } from "next/navigation"
 // Import the CSS files directly from the project
 import "./HomePage.css"
 import "./AdditionalStyles.css"
-import PricingSection from "./PricingSection"
-import ContactSection from "./ContactSection"
+
+
 
 const HomePage = () => {
   const router = useRouter()
@@ -92,13 +92,7 @@ const HomePage = () => {
                 <a href="#features">Features</a>
               </li>
               <li>
-                <a href="#pricing">Pricing</a>
-              </li>
-              <li>
                 <a href="#process-section">How It Works</a>
-              </li>
-              <li>
-                <a href="#contact">Contact</a>
               </li>
             </ul>
           </nav>
@@ -263,10 +257,6 @@ const HomePage = () => {
           </div>
         </div>
       </section>
-
-      {/* Add the Pricing and Contact sections */}
-      <PricingSection />
-      <ContactSection />
     </div>
   )
 }
